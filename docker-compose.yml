@@ -1,0 +1,52 @@
+version: "3"
+services:
+  crawling-queue-service:
+    image: vijay010498/crawling-queue-service
+    ports:
+      - "5000:5000"
+    networks:
+      - product-crawler
+    depends_on:
+      - postgres
+
+  product-page-crawler-service:
+    image: vijay010498/product-page-crawler-service
+    networks:
+      - product-crawler
+    depends_on:
+      - crawling-queue-service
+    deploy:
+      mode: replicated
+      replicas: 2
+
+  product-page-crawler-monitor:
+    image: vijay010498/product-page-crawler-monitor
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    networks:
+      - product-crawler
+    depends_on:
+      - crawling-queue-service
+      - product-page-crawler-service
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=vijay
+      - POSTGRES_DB=datazeit
+    ports:
+      - "5432:5432"
+    networks:
+      - product-crawler
+    volumes:
+      - postgres-data:/data/db
+
+networks:
+  product-crawler:
+    driver: bridge
+volumes:
+  postgres-data:
+    driver: local
