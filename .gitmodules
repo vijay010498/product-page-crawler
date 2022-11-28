@@ -1,0 +1,9 @@
+[submodule "crawling-queue-service"]
+	path = crawling-queue-service
+	url = https://github.com/vijay010498/crawling-queue-service
+[submodule "product-page-crawler-monitor"]
+	path = product-page-crawler-monitor
+	url = https://github.com/vijay010498/product-page-crawler-monitor
+[submodule "product-page-crawler-service"]
+	path = product-page-crawler-service
+	url = https://github.com/vijay010498/product-page-crawler-service
